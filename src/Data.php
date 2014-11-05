@@ -1,6 +1,6 @@
 <?php
 
-namespace Ohanzee\Helpers;
+namespace Ohanzee\Helper;
 
 class Data {
 
