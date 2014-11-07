@@ -146,12 +146,20 @@ class Session {
       * @return  $_SESSION[$key] || boolean(false)
       *
       */
-    public static function getVar($key){
-        if( isset( $_SESSION[$key] ) ){
-            return $_SESSION[$key];
-        }
+    public static function getVar($key, $default=null){
+        return self::isActive() && isset($_SESSION[$key]) ? $_SESSION[$key] : (!is_null($default) ? $default : FALSE);
+    }
 
-        return FALSE;
+    /**
+      * Get a session variables if session is active
+      *
+      * @param string|int $key
+      *
+      * @return  $_SESSION[$key] || boolean(false)
+      *
+      */
+    public static function getVars(){
+        return self::isActive() ? $_SESSION : FALSE;
     }
 
     /**
