@@ -83,6 +83,18 @@ class Session {
     }
 
     /**
+      * Replace the current session id with a new one
+      *
+      * @param boolean $delete Whether or not to delete the old session data
+      *
+      * @return  boolean
+      *
+      */
+    public static function refresh($delete=false){
+        return self::isActive() ? session_regenerate_id($delete) : FALSE;
+    }
+
+    /**
       * Set a single session variable
       *
       * @param string|int $key
