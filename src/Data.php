@@ -83,7 +83,7 @@ class Data
       */
     public static function isInt($data)
     {
-        if (!empty($data) && is_int($data)) {
+        if (!empty($data) && (is_int($data) || ctype_digit($data))) {
             return true;
         }
 
