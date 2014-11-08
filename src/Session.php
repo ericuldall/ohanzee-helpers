@@ -2,9 +2,8 @@
 
 namespace Ohanzee\Helper;
 
-class Session {
-
-
+class Session 
+{
     /**
       * Returns current session id
       *
@@ -12,7 +11,8 @@ class Session {
       * @return  session_id || boolean(false)
       *
       */
-    public static function getId(){
+    public static function getId()
+    {
         return session_id() ?: false;
     }
 
@@ -25,7 +25,8 @@ class Session {
       * @return  session_id || boolean(false)
       *
       */
-    public static function setId($session_id){
+    public static function setId($session_id)
+    {
         return self::isActive() ? false : session_id($session_id);
     }
 
@@ -37,12 +38,21 @@ class Session {
       * @return  boolean
       *
       */
-    public static function isActive(){
-        if ( version_compare(phpversion(), '5.4.0', '>=') ) {
-            return session_status() === PHP_SESSION_ACTIVE ? true : false;
-        } else {
-            return self::getId() ? true : false;
-        }
+    public static function isActive()
+    {
+        return self::status() === PHP_SESSION_ACTIVE ? true : false;
+    }
+
+    /**
+     * Get session status
+     *
+     *
+     * @return constant
+     *
+     */
+    public static function status()
+    {
+        return session_status();
     }
 
     /**
@@ -54,9 +64,10 @@ class Session {
       * @return  session_id || boolean(false)
       *
       */
-    public static function start($supress_errors=true){
-        if( !self::isActive() ){
-            if( !$session = $supress_errors ? @session_start() : session_start() ){
+    public static function start($supress_errors=true)
+    {
+        if (!self::isActive()) {
+            if (!$session = $supress_errors ? @session_start() : session_start()) {
                 return false;
             }
         }
@@ -72,9 +83,10 @@ class Session {
       * @return  boolean
       *
       */
-    public static function end(){
+    public static function end()
+    {
         $destroyed = true;
-        if( self::isActive() ){
+        if (self::isActive()) {
             self::start();
             $destroyed = session_destroy();
         }
@@ -90,7 +102,8 @@ class Session {
       * @return  boolean
       *
       */
-    public static function refresh($delete=false){
+    public static function refresh($delete=false)
+    {
         return self::isActive() ? session_regenerate_id($delete) : false;
     }
 
@@ -103,7 +116,8 @@ class Session {
       * @return  boolean(true)
       *
       */
-    public static function setVar($key, $val){
+    public static function setVar($key, $val)
+    {
         $_SESSION[$key] = $val;
 
         return true;
@@ -117,37 +131,9 @@ class Session {
       * @return  boolean(true)
       *
       */
-    public static function setVars(array $vars){
-        foreach( $vars as $key => $val ){
-            $_SESSION[$key] = $val;
-        }
-
-        return true;
-    }
-
-    /**
-      * Convert exception error code 0 - 3 into custom session alerts
-      *
-      * @param Exception $exception
-      *
-      * @return  boolean(true)
-      *
-      */
-    public static function setAlert($exception){
-        switch( $exception->getCode() )
-        {
-            case 0: self::setVar('_error', $exception->getMessage());
-            break;
-            case 1: self::setVar('_warning', $exception->getMessage());
-            break;
-            case 2: self::setVar('_success', $exception->getMessage());
-            break;
-            case 3: self::setVar('_info', $exception->getMessage());
-            break;
-            default: self::setVar('_error', $exception->getMessage());
-        }
-
-        return true;
+    public static function setVars(array $vars)
+    {
+        return array_replace_recursive($_SESSION, $vars) ? true : false;
     }
 
     /**
@@ -158,20 +144,22 @@ class Session {
       * @return  $_SESSION[$key] || boolean(false)
       *
       */
-    public static function getVar($key, $default=null){
-        return self::isActive() && isset($_SESSION[$key]) ? $_SESSION[$key] : (!is_null($default) ? $default : false);
+    public static function getVar($key, $default=null)
+    {
+        return self::isActive() && array_key_exists($key, $_SESSION) ? $_SESSION[$key] : (!is_null($default) ? $default : false);
     }
 
     /**
-      * Get a session variables if session is active
+      * Get all or a subset of session variables if session is active
       *
-      * @param string|int $key
+      * @param array $vars
       *
-      * @return  $_SESSION[$key] || boolean(false)
+      * @return  array || boolean(false)
       *
       */
-    public static function getVars(){
-        return self::isActive() ? $_SESSION : false;
+    public static function getVars($vars=array())
+    {
+        return self::isActive() ? (!empty($vars) ? array_intersect_key($_SESSION, array_flip($vars)) : $_SESSION) : false;
     }
 
     /**
@@ -182,21 +170,23 @@ class Session {
       * @return  boolean(true)
       *
       */
-    public static function destroyVar($key){
-        unset( $_SESSION[$key] );
+    public static function destroyVar($key)
+    {
+        unset($_SESSION[$key]);
 
         return true;
     }
     
     /**
-      * Destroy all variables
+      * Destroy all or a subset of variables
       *
       *
       * @return  boolean(true)
       *
       */
-    public static function destroyVars(){
-        $_SESSION = array();
+    public static function destroyVars($vars=array())
+    {
+        $_SESSION = !empty( $vars ) ? array_diff_key($_SESSION, array_flip($vars)) : array();
 
         return true;
     }
