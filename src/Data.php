@@ -2,15 +2,15 @@
 
 namespace Ohanzee\Helper;
 
-class Data {
-
+class Data
+{
     /**
      *
      * Regexp to validate string as Binary
      * @var PCRE
      *
      */
-    private static $binary_regexp       = '/^(?:[01]{8}){0,12}$/'; // UNTESTED
+    const BINARY_REGEXP       = '/^(?:[01]{8}){0,12}$/'; // UNTESTED
     
     /**
      *
@@ -18,7 +18,7 @@ class Data {
      * @var PCRE
      *
      */
-    private static $timestamp_regexp    = '/\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}/';
+    const TIMESTAMP_REGEXP    = '/\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}/';
     
     /**
      *
@@ -36,7 +36,7 @@ class Data {
      * @var PCRE
      *
      */
-    private static $date_regexp         = '/\d{4}-\d{1,2}-\d{1,2}/';
+    const DATE_REGEXP         = '/\d{4}-\d{1,2}-\d{1,2}/';
 
     /**
      *
@@ -60,8 +60,9 @@ class Data {
       * @param   string   $data  data to check
       * @return  boolean
       */
-    public static function isString($data){
-        if( !empty( $data ) && strlen( $data ) > 0 && !is_null( $data ) && is_string( $data ) ){
+    public static function isString($data)
+    {
+        if (!empty($data) && is_string( $data ) && strlen($data) > 0) {
             return true;
         }
 
@@ -80,8 +81,9 @@ class Data {
       * @param   integer   $data  data to check
       * @return  boolean
       */
-    public static function isInt($data){
-        if( !empty( $data ) && is_int( $data ) ){
+    public static function isInt($data)
+    {
+        if (!empty($data) && is_int($data)) {
             return true;
         }
 
@@ -100,8 +102,9 @@ class Data {
       * @param   float   $data  data to check
       * @return  boolean
       */
-    public static function isFloat($data){
-        if( !empty( $data ) && is_float( $data ) ){
+    public static function isFloat($data)
+    {
+        if (!empty($data) && is_float($data)) {
             return true;
         }
 
@@ -120,16 +123,14 @@ class Data {
       * @param   string   $data  data to check
       * @return  boolean
       */
-    /*
-    UNTESTED - NOT EVEN SURE IF THERE'S MUCH USE CASE FOR THIS METHOD
-    public static function isBinary($data){
-        if( !empty( $data ) && preg_match(static::$binary_regexp, $data) ){
+    public static function isBinary($data)
+    {
+        if (!empty($data) && preg_match(self::BINARY_REGEXP, $data)) {
             return true;
         }
 
         return false;
     }
-    */
 
      /**
       * Tests if data is a valid timestamp
@@ -144,8 +145,9 @@ class Data {
       * @return  boolean
       */
     //TODO: Add support for "real" datetime check, instead of possibly allowing something like 2014-99-99 88:77:66
-    public static function isTimestamp($data){
-        if( !empty( $data ) && preg_match(static::$timestamp_regexp, $data) && !in_array($data, static::$invalid_timestamps) ){
+    public static function isTimestamp($data)
+    {
+        if (!empty($data) && preg_match(self::TIMESTAMP_REGEXP, $data) && !in_array($data, static::$invalid_timestamps)) {
             return true;
         }
 
@@ -165,8 +167,9 @@ class Data {
       * @return  boolean
       */
     //TODO: Add support for "real" date check, instead of possibly allowing something like 2014-99-99
-    public static function isDate($data){
-        if( !empty( $data ) && preg_match(static::$date_regexp, $data) && !in_array($data, static::$invalid_dates) ){
+    public static function isDate($data)
+    {
+        if (!empty($data) && preg_match(self::DATE_REGEXP, $data) && !in_array($data, static::$invalid_dates)) {
             return true;
         }
 
@@ -185,8 +188,9 @@ class Data {
       * @param   string   $data  data to check
       * @return  boolean
       */
-    public static function isEmail($data){
-        if( filter_var($data, FILTER_VALIDATE_EMAIL) ){
+    public static function isEmail($data)
+    {
+        if (filter_var($data, FILTER_VALIDATE_EMAIL)) {
             return true;
         }
 
@@ -205,12 +209,12 @@ class Data {
       * @param   string   $data  data to check
       * @return  boolean
       */
-    public static function isUrl($data){
-        if( filter_var($data, FILTER_VALIDATE_URL) ){
+    public static function isUrl($data)
+    {
+        if (filter_var($data, FILTER_VALIDATE_URL)) {
             return true;
         }
 
         return false;
     }
-
 }
