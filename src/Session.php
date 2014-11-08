@@ -13,7 +13,7 @@ class Session {
       *
       */
     public static function getId(){
-        return empty(session_id()) ? FALSE : session_id();
+        return session_id() ?: false;
     }
 
     /**
@@ -26,7 +26,7 @@ class Session {
       *
       */
     public static function setId($session_id){
-        return self::isActive() ? FALSE : session_id($session_id);
+        return self::isActive() ? false : session_id($session_id);
     }
 
     /**
@@ -39,9 +39,9 @@ class Session {
       */
     public static function isActive(){
         if ( version_compare(phpversion(), '5.4.0', '>=') ) {
-            return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+            return session_status() === PHP_SESSION_ACTIVE ? true : false;
         } else {
-            return self::getId() ? TRUE : FALSE;
+            return self::getId() ? true : false;
         }
     }
 
@@ -54,10 +54,10 @@ class Session {
       * @return  session_id || boolean(false)
       *
       */
-    public static function start($supress_errors=TRUE){
+    public static function start($supress_errors=true){
         if( !self::isActive() ){
             if( !$session = $supress_errors ? @session_start() : session_start() ){
-                return FALSE;
+                return false;
             }
         }
 
@@ -91,7 +91,7 @@ class Session {
       *
       */
     public static function refresh($delete=false){
-        return self::isActive() ? session_regenerate_id($delete) : FALSE;
+        return self::isActive() ? session_regenerate_id($delete) : false;
     }
 
     /**
@@ -147,7 +147,7 @@ class Session {
             default: self::setVar('_error', $exception->getMessage());
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -159,7 +159,7 @@ class Session {
       *
       */
     public static function getVar($key, $default=null){
-        return self::isActive() && isset($_SESSION[$key]) ? $_SESSION[$key] : (!is_null($default) ? $default : FALSE);
+        return self::isActive() && isset($_SESSION[$key]) ? $_SESSION[$key] : (!is_null($default) ? $default : false);
     }
 
     /**
@@ -171,7 +171,7 @@ class Session {
       *
       */
     public static function getVars(){
-        return self::isActive() ? $_SESSION : FALSE;
+        return self::isActive() ? $_SESSION : false;
     }
 
     /**
@@ -185,7 +185,7 @@ class Session {
     public static function destroyVar($key){
         unset( $_SESSION[$key] );
 
-        return TRUE;
+        return true;
     }
     
     /**
@@ -198,7 +198,7 @@ class Session {
     public static function destroyVars(){
         $_SESSION = array();
 
-        return TRUE;
+        return true;
     }
 
 }
