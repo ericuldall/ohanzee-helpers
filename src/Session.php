@@ -132,8 +132,6 @@ class Session
     public static function setVar($key, $val)
     {
         $_SESSION[$key] = $val;
-
-        return true;
     }
 
     /**
