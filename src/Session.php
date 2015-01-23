@@ -65,15 +65,15 @@ class Session
      * Start a new session if one is not already started
      *
      *
-     * @param boolean $supress_errors 
+     * @param boolean $suppress_errors 
      *
      * @return  session_id || boolean(false)
      *
      */
-    public static function start($supress_errors=true)
+    public static function start($suppress_errors=false)
     {
         if (!static::isActive()) {
-            if (!$session = $supress_errors ? @session_start() : session_start()) {
+            if (!$session = $suppress_errors ? @session_start() : session_start()) {
                 return false;
             }
         }
