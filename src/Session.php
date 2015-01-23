@@ -144,7 +144,7 @@ class Session
      */
     public static function setVars(array $vars)
     {
-        return array_replace_recursive($_SESSION, $vars) ? true : false;
+        array_replace_recursive($_SESSION, $vars);
     }
 
     /**
