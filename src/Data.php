@@ -34,7 +34,7 @@ class Data
      * @var array
      *
      */
-    private function getInvalidDates(){ 
+    public static function getInvalidDates(){ 
         return array(
                         '0000-00-00'
                     );
@@ -47,7 +47,7 @@ class Data
      *
      */
 
-    private function getInvalidTimestamps(){
+    public static function getInvalidTimestamps(){
         return array(
                         '0000-00-00 00:00:00'
                     );
@@ -130,7 +130,7 @@ class Data
       */
     public static function isBinary($data)
     {
-        if (!empty($data) && preg_match(self::BINARY_REGEXP, $data)) {
+        if (!empty($data) && preg_match(static::BINARY_REGEXP, $data)) {
             return true;
         }
 
@@ -152,7 +152,7 @@ class Data
     //TODO: Add support for "real" datetime check, instead of possibly allowing something like 2014-99-99 88:77:66
     public static function isTimestamp($data)
     {
-        if (!empty($data) && preg_match(self::TIMESTAMP_REGEXP, $data) && !in_array($data, self::getInvalidTimestamps())) {
+        if (!empty($data) && preg_match(static::TIMESTAMP_REGEXP, $data) && !in_array($data, static::getInvalidTimestamps())) {
             return true;
         }
 
@@ -174,7 +174,7 @@ class Data
     //TODO: Add support for "real" date check, instead of possibly allowing something like 2014-99-99
     public static function isDate($data)
     {
-        if (!empty($data) && preg_match(self::DATE_REGEXP, $data) && !in_array($data, self::getInvalidDate())) {
+        if (!empty($data) && preg_match(static::DATE_REGEXP, $data) && !in_array($data, static::getInvalidDates())) {
             return true;
         }
 
