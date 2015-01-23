@@ -146,7 +146,7 @@ class Data
       *     // Returns false
       *     Data::isTimestamp('0000-00-00 00:00:00');
       *
-      * @param   timestamp   $data  data to check
+      * @param   string   $data  data to check
       * @return  boolean
       */
     //TODO: Add support for "real" datetime check, instead of possibly allowing something like 2014-99-99 88:77:66
