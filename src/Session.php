@@ -111,7 +111,13 @@ class Session
      */
     public static function refresh($delete=false)
     {
-        return static::isActive() ? session_regenerate_id($delete) : false;
+        $session_id = static::isActive() ? session_regenerate_id($delete) : false;
+
+        if( $session_id ){
+            return $session_id;
+        }
+
+        throw new LogicException('There is not active session to refresh!');
     }
 
     /**
