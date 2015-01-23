@@ -170,7 +170,7 @@ class Session
      */
     public static function getVars(Array $vars=array())
     {
-        if ($vars) {
+        if(!empty($vars)){
             return array_intersect_key($_SESSION, array_flip($vars));
         }
         
@@ -199,11 +199,13 @@ class Session
      * @return  boolean(true)
      *
      */
-    public static function destroyVars($vars=array())
+    public static function destroyVars(Array $vars=array())
     {
-        $_SESSION = !empty( $vars ) ? array_diff_key($_SESSION, array_flip($vars)) : array();
-
-        return true;
+        if(!empty($vars)){
+            $_SESSION = array_diff_key($_SESSION, array_flip($vars));
+        }else{
+            $_SESSION = array();
+        }
     }
 
 }
