@@ -92,10 +92,11 @@ class Session
     public static function end()
     {
         $destroyed = true;
-        if (static::isActive()) {
+        if (!static::isActive()) {
             static::start();
-            $destroyed = session_destroy();
         }
+        
+        $destroyed = session_destroy();
 
         return $destroyed;
     }
