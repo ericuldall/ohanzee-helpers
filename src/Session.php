@@ -157,7 +157,7 @@ class Session
      */
     public static function getVar($key, $default=null)
     {
-        return static::isActive() && array_key_exists($key, $_SESSION) ? $_SESSION[$key] : (!is_null($default) ? $default : false);
+        return static::isActive() && array_key_exists($key, $_SESSION) ? $_SESSION[$key] : $default);
     }
 
     /**
