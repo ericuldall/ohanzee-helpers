@@ -10,7 +10,7 @@ class Data
      * @var PCRE
      *
      */
-    const BINARY_REGEXP       = '/(?:[01]{8}\s?){0,12}/';
+    const BINARY_REGEXP       = '/(?:[01]{8}\s?){1,}/';
     
     /**
      *
