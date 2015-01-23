@@ -46,7 +46,7 @@ class Session
      */
     public static function isActive()
     {
-        return static::status() === PHP_SESSION_ACTIVE ? true : false;
+        return static::status() === PHP_SESSION_ACTIVE;
     }
 
     /**
