@@ -22,16 +22,6 @@ class Data
     
     /**
      *
-     * Array of invalid Timestamp values
-     * @var array
-     *
-     */
-    private static $invalid_timestamps  = array(
-                                            '0000-00-00 00:00:00'
-                                        );
-
-    /**
-     *
      * Regexp to validate string as Date
      * @var PCRE
      *
@@ -40,14 +30,29 @@ class Data
 
     /**
      *
-     * Array of invalid Date values
+     * Array of invalid Date values - Getter Method
      * @var array
      *
      */
-    private static $invalid_dates       = array(
-                                            '0000-00-00'
-                                        );
+    private function getInvalidDates(){ 
+        return array(
+                        '0000-00-00'
+                    );
+    }
     
+    /**
+     *
+     * Array of invalid Timestamp values - Getter Method
+     * @var array
+     *
+     */
+
+    private function getInvalidTimestamps(){
+        return array(
+                        '0000-00-00 00:00:00'
+                    );
+    }
+
      /**
       * Tests if data is a valid string
       *
@@ -147,7 +152,7 @@ class Data
     //TODO: Add support for "real" datetime check, instead of possibly allowing something like 2014-99-99 88:77:66
     public static function isTimestamp($data)
     {
-        if (!empty($data) && preg_match(self::TIMESTAMP_REGEXP, $data) && !in_array($data, static::$invalid_timestamps)) {
+        if (!empty($data) && preg_match(self::TIMESTAMP_REGEXP, $data) && !in_array($data, self::getInvalidTimestamps())) {
             return true;
         }
 
@@ -169,7 +174,7 @@ class Data
     //TODO: Add support for "real" date check, instead of possibly allowing something like 2014-99-99
     public static function isDate($data)
     {
-        if (!empty($data) && preg_match(self::DATE_REGEXP, $data) && !in_array($data, static::$invalid_dates)) {
+        if (!empty($data) && preg_match(self::DATE_REGEXP, $data) && !in_array($data, self::getInvalidDate())) {
             return true;
         }
 
