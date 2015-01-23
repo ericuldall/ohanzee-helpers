@@ -142,7 +142,7 @@ class Session
      * @return  boolean(true)
      *
      */
-    public static function setVars(array $vars)
+    public static function setVars(Array $vars)
     {
         array_replace_recursive($_SESSION, $vars);
     }
@@ -168,9 +168,13 @@ class Session
      * @return  array || boolean(false)
      *
      */
-    public static function getVars($vars=array())
+    public static function getVars(Array $vars=array())
     {
-        return static::isActive() ? (!empty($vars) ? array_intersect_key($_SESSION, array_flip($vars)) : $_SESSION) : false;
+        if ($vars) {
+            return array_intersect_key($_SESSION, array_flip($vars));
+        }
+        
+        return $_SESSION;
     }
 
     /**
