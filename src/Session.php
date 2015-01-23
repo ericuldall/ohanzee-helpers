@@ -27,7 +27,13 @@ class Session
      */
     public static function setId($session_id)
     {
-        return self::isActive() ? false : session_id($session_id);
+        $session_id = static::isActive() ? false : session_id($session_id);
+
+        if( $session_id ){
+            return $session_id;
+        }
+
+        throw new LogicException('Can\'t set session id while session is active!');
     }
 
     /**
@@ -40,7 +46,7 @@ class Session
      */
     public static function isActive()
     {
-        return self::status() === PHP_SESSION_ACTIVE ? true : false;
+        return static::status() === PHP_SESSION_ACTIVE ? true : false;
     }
 
     /**
@@ -66,13 +72,13 @@ class Session
      */
     public static function start($supress_errors=true)
     {
-        if (!self::isActive()) {
+        if (!static::isActive()) {
             if (!$session = $supress_errors ? @session_start() : session_start()) {
                 return false;
             }
         }
 
-        return self::getId();
+        return static::getId();
     }
 
     /**
@@ -86,8 +92,8 @@ class Session
     public static function end()
     {
         $destroyed = true;
-        if (self::isActive()) {
-            self::start();
+        if (static::isActive()) {
+            static::start();
             $destroyed = session_destroy();
         }
 
@@ -104,7 +110,7 @@ class Session
      */
     public static function refresh($delete=false)
     {
-        return self::isActive() ? session_regenerate_id($delete) : false;
+        return static::isActive() ? session_regenerate_id($delete) : false;
     }
 
     /**
@@ -146,7 +152,7 @@ class Session
      */
     public static function getVar($key, $default=null)
     {
-        return self::isActive() && array_key_exists($key, $_SESSION) ? $_SESSION[$key] : (!is_null($default) ? $default : false);
+        return static::isActive() && array_key_exists($key, $_SESSION) ? $_SESSION[$key] : (!is_null($default) ? $default : false);
     }
 
     /**
@@ -159,7 +165,7 @@ class Session
      */
     public static function getVars($vars=array())
     {
-        return self::isActive() ? (!empty($vars) ? array_intersect_key($_SESSION, array_flip($vars)) : $_SESSION) : false;
+        return static::isActive() ? (!empty($vars) ? array_intersect_key($_SESSION, array_flip($vars)) : $_SESSION) : false;
     }
 
     /**
